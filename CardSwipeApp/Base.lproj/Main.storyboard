@@ -240,6 +240,9 @@
                                     <constraint firstAttribute="width" constant="70" id="oWc-QI-Nzm"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="バツ"/>
+                                <connections>
+                                    <action selector="disLikeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rHn-yE-5Ww"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QtT-0t-wWY">
                                 <rect key="frame" x="304" y="752" width="70" height="70"/>
@@ -248,6 +251,9 @@
                                     <constraint firstAttribute="width" constant="70" id="gdz-Sr-Xir"/>
                                 </constraints>
                                 <state key="normal" title="Button" image="ハート"/>
+                                <connections>
+                                    <action selector="likeButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="eef-1y-cqi"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9ek-1c-rIv">
                                 <rect key="frame" x="0.0" y="88" width="414" height="624"/>
@@ -348,7 +354,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yRy-tw-MPB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2252" y="21"/>
+            <point key="canvasLocation" x="2183" y="21"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lRA-Q8-8hI">
@@ -366,7 +372,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1uB-jN-WOH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="515.94202898550725" y="20.758928571428569"/>
+            <point key="canvasLocation" x="691" y="21"/>
         </scene>
     </scenes>
     <resources>

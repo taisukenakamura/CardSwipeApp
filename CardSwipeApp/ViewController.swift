@@ -115,15 +115,15 @@ class ViewController: UIViewController {
                     
                 })
                 // ベースカードの角度と位置を元に戻す
-               resetCard()
+                resetCard()
                 // likeImageを消す
                 likeImage.isHidden = true
-              
+                
                 // 次のカードへ
                 selectedOfCardCount += 1
                 // カードが規定枚数に達した際に遷移先へ飛ばす
                 if selectedOfCardCount >= personList.count {
-                    performSegue(withIdentifier: "ToLikedList", sender: nil)
+                    performSegue(withIdentifier: "ToLikedList", sender: self)
                 }
                 
             }else if card.center.x > self.view.frame.width - 50{
@@ -143,7 +143,7 @@ class ViewController: UIViewController {
                 selectedOfCardCount += 1
                 // カードが規定枚数に達した際に遷移先へ飛ばす
                 if selectedOfCardCount >= personList.count {
-                    performSegue(withIdentifier: "ToLikedList", sender: nil)
+                    performSegue(withIdentifier: "ToLikedList", sender: self)
                 }
             }
                 
@@ -171,5 +171,37 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func disLikeButtonTapped(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.resetCard()
+            self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x + 500, y:self.personList[self.selectedOfCardCount].center.y)
+        })
+        
+        selectedOfCardCount += 1
+        
+        if selectedOfCardCount >= personList.count {
+            performSegue(withIdentifier: "ToLikedList", sender: self)
+        }
+        
+        
+    }
+    
+    @IBAction func likeButtonTapped(_ sender: Any) {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.resetCard()
+            self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x + 500, y:self.personList[self.selectedOfCardCount].center.y)
+        })
+        
+        likedName.append(nameList[selectedOfCardCount])
+        selectedOfCardCount += 1
+        if selectedOfCardCount >= personList.count {
+            // 画面遷移
+            performSegue(withIdentifier: "ToLikedList", sender: self)
+            
+        }
+        
+        
+    }
+    
 }
-
