@@ -37,6 +37,27 @@ class ViewController: UIViewController {
         
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        resetView()
+    }
+    
+    
+    func resetView() {
+        
+        for person in personList {
+            // 元に戻す処理
+            person.center = self.centerOfCard
+            person.transform = .identity
+         
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //        personListにperson1~5を追加
@@ -45,6 +66,14 @@ class ViewController: UIViewController {
         personList.append(person3)
         personList.append(person4)
         personList.append(person5)
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        resetView()
+        selectedOfCardCount = 0
+        likedName = []
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -170,12 +199,12 @@ class ViewController: UIViewController {
         }
         
     }
-    
+    // badボタンの処理
     @IBAction func disLikeButtonTapped(_ sender: Any) {
         
         UIView.animate(withDuration: 0.5, animations: {
             self.resetCard()
-            self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x + 500, y:self.personList[self.selectedOfCardCount].center.y)
+            self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x - 500, y:self.personList[self.selectedOfCardCount].center.y)
         })
         
         selectedOfCardCount += 1
@@ -186,12 +215,13 @@ class ViewController: UIViewController {
         
         
     }
-    
+    // goodのボタンの処理
     @IBAction func likeButtonTapped(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
             self.resetCard()
             self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x + 500, y:self.personList[self.selectedOfCardCount].center.y)
         })
+        
         
         likedName.append(nameList[selectedOfCardCount])
         selectedOfCardCount += 1
@@ -202,6 +232,10 @@ class ViewController: UIViewController {
         }
         
         
+        
     }
     
-}
+    
+    }
+    
+
