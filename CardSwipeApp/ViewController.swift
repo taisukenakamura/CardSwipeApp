@@ -15,38 +15,45 @@ class ViewController: UIViewController {
     @IBOutlet weak var likeImage: UIImageView!
     //    ユーザーカード
     @IBOutlet weak var person1: UIView!
+    
     @IBOutlet weak var person2: UIView!
+    
     @IBOutlet weak var person3: UIView!
+    
     @IBOutlet weak var person4: UIView!
+    
     @IBOutlet weak var person5: UIView!
     
-    //    ベースカードの中心
+    // ベースカードの中心
     var centerOfCard : CGPoint!
-    //    ユーザーカードの配列
+    // ユーザーカードの配列。UIView型で変数定義したデータが格納される
     var personList : [UIView] = []
-    //    選択されたカードの数
+    // 選択されたカードの数
     var selectedOfCardCount : Int = 0
-    //    ユーザーリスト
+    // ユーザーリスト
     let nameList : [String] = ["津田梅子","ジョージワシントン","ガリレオガリレイ","板垣退助","ジョン万次郎"]
-    //    いいねされたカードの配列
+    // いいねされたカードの配列
     var likedName : [String] = []
     
     override func viewDidLayoutSubviews() {
-        //        ベースカードの中心を代入
+        // ベースカードの中心を代入
         centerOfCard = baseCard.center
         
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        
         resetView()
+        
     }
     
     
     func resetView() {
-        
+        //配列を再び並べる
         for person in personList {
-            // 元に戻す処理
+            // カードの位置を元に戻す
             person.center = self.centerOfCard
+            //カードの角度を元に戻す
             person.transform = .identity
          
         }
@@ -60,7 +67,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        personListにperson1~5を追加
+        // personListにperson1~5を追加
         personList.append(person1)
         personList.append(person2)
         personList.append(person3)
@@ -71,7 +78,7 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        resetView()
+        
         selectedOfCardCount = 0
         likedName = []
     }
@@ -85,28 +92,30 @@ class ViewController: UIViewController {
         vc.likedName = likedName
     }
     
-    //    ベースカードを元に戻す
-    func resetCard(){
-        //        位置を元に戻す
+    // ベースカードを元に戻す
+    func resetCard() {
+        // 位置を元に戻す
         baseCard.center = centerOfCard
-        //        角度を戻す
+        // 角度を戻す
         baseCard.transform = .identity
     }
     
     @IBAction func swipeCard(_ sender: UIPanGestureRecognizer) {
-        //             ベースカード
+        // ベースカード
+        // スワイプ動作を検知する対象のViewを取得する。
         let card = sender.view!
-        //        動いた距離(Viewからの距離)
+        // 動いた距離(Viewからの距離)
+        // senderのオブジェクトから動いた距離を取得してどのくらい動いたかを定数にする
         let point = sender.translation(in: view)
-        //        取得できた距離をcard.centerに加算
+        // 取得できた距離をcard.centerに加算
         card.center = CGPoint(x: card.center.x + point.x, y: card.center.y + point.y)
-        //        ユーザーカードにも同じ動きをさせる
+        // ユーザーカードにも同じ動きをさせる
         personList[selectedOfCardCount].center = CGPoint(x: card.center.x + point.x, y: card.center.y + point.y)
-        //        元々の位置と移動先との差
+        // 元々の位置と移動先との差
         let xfromCenter = card.center.x - view.center.x
         
-        //        角度をつける処理(引数にラジアンを導入する)
-        //        0.785は45度をラジアンで表現した近似値
+        // 角度をつける処理(引数にラジアンを導入する)
+        // 0.785は45度をラジアンで表現した近似値
         card.transform = CGAffineTransform(rotationAngle: xfromCenter / (view.frame.width / 2) * -0.785)
         
         
@@ -115,13 +124,12 @@ class ViewController: UIViewController {
         
         if xfromCenter > 0 {
             // goodを表示
-            
             likeImage.image = #imageLiteral(resourceName: "いいね")
             likeImage.isHidden = false
             
-        }else if xfromCenter < 0{
+        } else if xfromCenter < 0 {
             // badを表示
-            
+
             likeImage.image = #imageLiteral(resourceName: "よくないね")
             likeImage.isHidden = false
             
@@ -129,20 +137,18 @@ class ViewController: UIViewController {
         
         
         
-        
-        
-        //        元の位置に戻す処理
+        // 元の位置に戻す処理
         if sender.state == UIGestureRecognizer.State.ended {
             
-            
+            // badの場合
             if card.center.x < 50 {
                 // 左へ飛ばす場合
                 // アニメーションをつける
                 UIView.animate(withDuration: 0.5, animations: {
-                    // X座標を左に500とばす(-500)
+                // X座標を左に500とばす(-500)
                     self.personList[self.selectedOfCardCount].center = CGPoint(x: self.personList[self.selectedOfCardCount].center.x - 500, y :self.personList[self.selectedOfCardCount].center.y)
                     
-                })
+                } )
                 // ベースカードの角度と位置を元に戻す
                 resetCard()
                 // likeImageを消す
@@ -150,18 +156,19 @@ class ViewController: UIViewController {
                 
                 // 次のカードへ
                 selectedOfCardCount += 1
+                
                 // カードが規定枚数に達した際に遷移先へ飛ばす
                 if selectedOfCardCount >= personList.count {
                     performSegue(withIdentifier: "ToLikedList", sender: self)
                 }
-                
-            }else if card.center.x > self.view.frame.width - 50{
+                // ビューの横幅を取得
+            } else if card.center.x > self.view.frame.width - 50{
                 // 右へ飛ばす場合
                 // アニメーションをつける
                 UIView.animate(withDuration: 0.5, animations: {
                     // X座標を右に500とばす(+500)
                     self.personList[self.selectedOfCardCount].center = CGPoint(x: self.personList[self.selectedOfCardCount].center.x + 500, y :self.personList[self.selectedOfCardCount].center.y)
-                })
+                } )
                 // ベースカードの角度と位置を元に戻す
                 resetCard()
                 // likeImageを消す
@@ -192,7 +199,7 @@ class ViewController: UIViewController {
                     self.resetCard()
                     // likeImageを消す
                     self.likeImage.isHidden = true
-                })
+                } )
                 
             }
             
@@ -205,7 +212,7 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.5, animations: {
             self.resetCard()
             self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x - 500, y:self.personList[self.selectedOfCardCount].center.y)
-        })
+        } )
         
         selectedOfCardCount += 1
         
@@ -218,9 +225,10 @@ class ViewController: UIViewController {
     // goodのボタンの処理
     @IBAction func likeButtonTapped(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
+            
             self.resetCard()
             self.personList[self.selectedOfCardCount].center = CGPoint(x:self.personList[self.selectedOfCardCount].center.x + 500, y:self.personList[self.selectedOfCardCount].center.y)
-        })
+        } )
         
         
         likedName.append(nameList[selectedOfCardCount])
@@ -236,6 +244,6 @@ class ViewController: UIViewController {
     }
     
     
-    }
+}
     
 
